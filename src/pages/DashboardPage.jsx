@@ -1,10 +1,7 @@
-import { NavLink, Outlet } from "react-router-dom";
-import { LayoutDashboard, ArrowLeftRight, Lightbulb } from "lucide-react";
+import { Outlet } from "react-router-dom";
+
 import LeftLayout from "../components/LeftLayout";
-import SummaryCard from "../components/SummaryCard";
-import Revenue from "../components/revenue";
-import SpendingBreakdown from "../components/SpendingBreakdown";
-import RecentTransactions from "../components/RecentTransactions";
+
 
 export default function DashboardPage() {
   return (
