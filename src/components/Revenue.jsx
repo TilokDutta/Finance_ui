@@ -16,21 +16,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-
-const dummyTransactions = [
-  { date: "2025-11-15", type: "income", amount: 85000 },
-  { date: "2025-11-20", type: "expense", amount: 30000 },
-  { date: "2025-12-01", type: "income", amount: 95000 },
-  { date: "2025-12-15", type: "expense", amount: 40000 },
-  { date: "2026-01-01", type: "income", amount: 85000 },
-  { date: "2026-01-20", type: "expense", amount: 35000 },
-  { date: "2026-02-01", type: "income", amount: 107000 },
-  { date: "2026-02-18", type: "expense", amount: 42000 },
-  { date: "2026-03-01", type: "income", amount: 85000 },
-  { date: "2026-03-22", type: "expense", amount: 38000 },
-  { date: "2026-04-01", type: "income", amount: 85000 },
-  { date: "2026-04-03", type: "expense", amount: 45000 },
-]
+import { TRANSACTIONS } from "../data/data";
 
 const config = [
   { key: "balance", label: "Balance", color: "#E8604A" },
@@ -66,7 +52,7 @@ export default function Revenue() {
       const start = startOfMonth(month);
       const end = endOfMonth(month);
 
-      const monthTxns = dummyTransactions.filter((t) => {
+      const monthTxns = TRANSACTIONS.filter((t) => {
         const d = parseISO(t.date);
         return d >= start && d <= end;
       });

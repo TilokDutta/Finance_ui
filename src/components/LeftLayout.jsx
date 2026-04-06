@@ -1,16 +1,21 @@
-import { LayoutDashboard, ArrowLeftRight, Lightbulb } from 'lucide-react'
-import { NavLink, Outlet } from 'react-router-dom'
-import { cn } from '../lib/utils';
-import { useState } from 'react';
+import { LayoutDashboard, ArrowLeftRight, Lightbulb } from "lucide-react";
+import { NavLink } from "react-router-dom";
+import { cn } from "../lib/utils";
+import { useAppStore } from "../store";
 
 const navItems = [
-  { to: '/dashboard', icon: LayoutDashboard, label: 'Overview' },
-  { to: '/dashboard/transactions', icon: ArrowLeftRight, label: 'Transactions' },
-  { to: '/dashboard/insights', icon: Lightbulb, label: 'Insights' },
-]
+  { to: "/dashboard", icon: LayoutDashboard, label: "Overview" },
+  {
+    to: "/dashboard/transactions",
+    icon: ArrowLeftRight,
+    label: "Transactions",
+  },
+  { to: "/dashboard/insights", icon: Lightbulb, label: "Insights" },
+];
 
 export default function LeftLayout() {
-  const [role,setRole] = useState('viewer');
+  const role = useAppStore((s) => s.role);
+  const setRole = useAppStore((s) => s.setRole);
   return (
     <div className="sticky w-70 h-screen bg-white shadow-2xl">
       <div className="flex items-center border-b w-full h-18 border-gray-100 pl-4">
@@ -42,14 +47,21 @@ export default function LeftLayout() {
           ))}
         </nav>
       </div>
-      <div className='p-7'>
-        <p className='text-gray-400'>Role</p>
-        <div className='flex bg-gray-100 rounded-xl p-0.5'>
-          {['viewer','admin'].map((r) =>(
-            <button key={r} onClick={() => setRole(r)} className={cn('flex-1 text-md font-semibold py-1.5 rounded-[10px]',role===r ?
-              'bg-white text-gray-900 shadow-sm':'text-gray hover:texy-gray-500'
-            )}>
-                {r}
+      <div className="p-7">
+        <p className="text-gray-400">Role</p>
+        <div className="flex bg-gray-100 rounded-xl p-0.5">
+          {["viewer", "admin"].map((r) => (
+            <button
+              key={r}
+              onClick={() => setRole(r)}
+              className={cn(
+                "flex-1 text-md font-semibold py-1.5 rounded-[10px]",
+                role === r
+                  ? "bg-white text-gray-900 shadow-sm"
+                  : "text-gray hover:texy-gray-500",
+              )}
+            >
+              {r}
             </button>
           ))}
         </div>

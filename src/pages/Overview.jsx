@@ -20,7 +20,7 @@ export default function Overview() {
           <SpendingBreakdown />
         </div>
       </div>
-      <TransactionTable transactions={TRANSACTIONS.slice(0,5)}/>
+      <TransactionTable transactions={TRANSACTIONS.slice(-5)}/>
     </div>
   );
 }

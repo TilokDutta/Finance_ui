@@ -1,6 +1,19 @@
 import { Wallet,TrendingUp,TrendingDown,PiggyBank } from 'lucide-react';
+import { TRANSACTIONS } from '../data/data';
 
-export default function(){
+export default function SummaryCard(){
+    const totalIncome = TRANSACTIONS
+        .filter((t) => t.type === 'income')
+        .reduce((sum,t) => sum +t.amount,0)
+    const totalExpense = TRANSACTIONS
+        .filter((t) => t.type === 'expense')
+        .reduce((sum,t) => sum +t.amount,0)
+    const totalBal = totalIncome-totalExpense;
+    const SavingsRate = ((totalIncome-totalExpense)/totalIncome*100).toFixed(0);
+
+
+
+
     return <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
         <div className="bg-white p-4 rounded-xl shadow-xl/10 pb-8">
             <div className='w-8 h-8 flex justify-center items-center bg-black text-white p-2 rounded-xl'>
@@ -10,7 +23,7 @@ export default function(){
                 Total Balance
             </p>
             <p className='text-2xl font-bold'>
-                $4,66,234
+                ₹{totalBal.toLocaleString('en-IN')}
             </p>
         </div>
         <div className="card p-4 rounded-xl shadow-xl/10 pb-8">
@@ -21,7 +34,7 @@ export default function(){
                 Total Income
             </p>
             <p className='text-2xl font-bold'>
-                $4,66,234
+                ₹{totalIncome.toLocaleString('en-IN')}
             </p>
         </div>
         <div className="bg-white p-4 rounded-xl shadow-xl/10 pb-8">
@@ -32,7 +45,7 @@ export default function(){
                 Total Expences
             </p>
             <p className='text-2xl font-bold'>
-                $4,66,234
+                ₹{totalExpense.toLocaleString('en-IN')}
             </p>
         </div>
         <div className="card p-4 rounded-xl shadow-xl/10 pb-8">
@@ -43,7 +56,7 @@ export default function(){
                 Savings Rate
             </p>
             <p className='text-2xl font-bold'>
-                $4,66,234
+                {SavingsRate}%
             </p>
         </div>
     </div>
