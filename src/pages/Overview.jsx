@@ -1,4 +1,4 @@
-import Revenue from "../components/revenue";
+import Revenue from "../components/Revenue";
 import SpendingBreakdown from "../components/SpendingBreakdown";
 import SummaryCard from "../components/SummaryCard";
 import TransactionTable from "../components/TransactionTable";
