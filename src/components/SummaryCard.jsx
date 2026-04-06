@@ -13,11 +13,11 @@ export default function(){
                 $4,66,234
             </p>
         </div>
-        <div className="bg-white p-4 rounded-xl shadow-xl/10 pb-8">
+        <div className="card p-4 rounded-xl shadow-xl/10 pb-8">
             <div className='w-8 h-8 flex justify-center items-center bg-green-200 text-green-600 p-2 rounded-xl'>
                 <TrendingUp/>
             </div>
-            <p className='text-xs py-3 text-gray-400'>
+            <p className='text-xs py-3 text-gray-100'>
                 Total Income
             </p>
             <p className='text-2xl font-bold'>
@@ -35,11 +35,11 @@ export default function(){
                 $4,66,234
             </p>
         </div>
-        <div className="bg-white p-4 rounded-xl shadow-xl/10 pb-8">
+        <div className="card p-4 rounded-xl shadow-xl/10 pb-8">
             <div className='w-8 h-8 flex justify-center items-center bg-blue-200 text-blue-600 p-2 rounded-xl'>
                 <PiggyBank/>
             </div>
-            <p className='text-xs py-3 text-gray-400'>
+            <p className='text-xs py-3 text-gray-100'>
                 Savings Rate
             </p>
             <p className='text-2xl font-bold'>

@@ -10,9 +10,9 @@ const navItems = [
 ]
 
 export default function LeftLayout() {
-  const [role,setRole] = useState();
+  const [role,setRole] = useState('viewer');
   return (
-    <div className="w-70 h-screen bg-white shadow-2xl">
+    <div className="sticky w-70 h-screen bg-white shadow-2xl">
       <div className="flex items-center border-b w-full h-18 border-gray-100 pl-4">
         <div className="bg-black text-white w-8 h-8 rounded-full text-center pt-1 font-bold">
           {" "}

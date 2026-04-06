@@ -23,4 +23,7 @@
   .shadow-card {
     @apply shadow-[0_2px_12px_rgba(0,0,0,0.06)];
   }
+  .card{
+    @apply bg-[#E8604A] hover:bg-[#d4503a]
+  }
 }
