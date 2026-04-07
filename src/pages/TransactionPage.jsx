@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Search, SlidersHorizontal, Plus, X } from "lucide-react";
 import { CATEGORIES } from "../data/data";
 import TransactionTable from "../components/TransactionTable";
-import { useAppStore } from "../store";
+import { useTransactionStore, useRoleStore } from "../store";
 
 const EMPTY_FORM = {
   description: "",
@@ -27,9 +27,9 @@ export default function TransactionPage() {
   const [errors, setErrors] = useState({});
 
   // — Zustand store —
-  const role = useAppStore((s) => s.role);
-  const transactions = useAppStore((s) => s.transactions); // ✅ from store, not static import
-  const addTransaction = useAppStore((s) => s.addTransaction);
+  const role = useRoleStore((s) => s.role);
+  const transactions = useTransactionStore((s) => s.transactions); // ✅ from store, not static import
+  const addTransaction = useTransactionStore((s) => s.addTransaction);
 
   // — Filtered list —
   const filtered = transactions.filter((t) => {
@@ -91,31 +91,32 @@ export default function TransactionPage() {
       </div>
 
       {/* ── Filter box ── */}
-      <div className="bg-white rounded-2xl p-4 mb-6 shadow-sm">
+      <div className="bg-white dark:bg-zinc-800 rounded-2xl p-4 mb-6 shadow-sm">
         <div className="flex items-center gap-3">
           {/* Search */}
-          <div className="flex items-center bg-gray-50 border border-gray-200 px-4 py-2.5 rounded-xl gap-2 flex-1">
-            <Search size={16} className="text-gray-400" />
+          <div className="flex items-center bg-gray-50 dark:bg-zinc-700 border border-gray-200 dark:border-zinc-600 px-4 py-2.5 rounded-xl gap-2 flex-1">
+            <Search size={16} className="text-gray-400 dark:text-zinc-400" />
             <input
               type="text"
               placeholder="Search transactions..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="text-md text-gray-900 placeholder-gray-400 bg-transparent w-full outline-none"
+              className="text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 bg-transparent w-full outline-none"
             />
           </div>
 
           {/* Type toggle */}
-          <div className="flex rounded-xl bg-gray-50 p-1 border border-gray-200">
+          <div className="flex rounded-xl bg-gray-50 dark:bg-zinc-700 p-1 border border-gray-200 dark:border-zinc-600">
             {["All", "Income", "Expense"].map((selectedType) => (
               <button
                 key={selectedType}
                 onClick={() => setType(selectedType)}
-                className={`text-md font-semibold px-4 py-2 rounded-[10px] cursor-pointer transition-all
-                  ${type === selectedType
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-400 hover:text-gray-600"
-                  }`}
+                className={`text-sm font-semibold px-4 py-2 rounded-[10px] cursor-pointer transition-all
+            ${
+              type === selectedType
+                ? "bg-white dark:bg-zinc-600 text-gray-900 dark:text-white shadow-sm"
+                : "text-gray-400 dark:text-zinc-400 hover:text-gray-600 dark:hover:text-zinc-200"
+            }`}
               >
                 {selectedType}
               </button>
@@ -126,10 +127,11 @@ export default function TransactionPage() {
           <button
             onClick={() => setShowFilters((v) => !v)}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-semibold transition-all cursor-pointer
-              ${showFilters
-                ? "bg-orange-50 border-orange-200 text-[#E8604A]"
-                : "bg-gray-50 border-gray-200 text-gray-500 hover:text-gray-700"
-              }`}
+        ${
+          showFilters
+            ? "bg-orange-50 dark:bg-[#E8604A]/10 border-orange-200 dark:border-[#E8604A]/30 text-[#E8604A]"
+            : "bg-gray-50 dark:bg-zinc-700 border-gray-200 dark:border-zinc-600 text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200"
+        }`}
           >
             <SlidersHorizontal size={16} />
             Filters
@@ -137,13 +139,15 @@ export default function TransactionPage() {
         </div>
 
         {showFilters && (
-          <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t border-gray-100">
+          <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t border-gray-100 dark:border-zinc-700">
             <div>
-              <p className="text-xs text-gray-400 mb-1.5">Category</p>
+              <p className="text-xs text-gray-400 dark:text-zinc-500 mb-1.5">
+                Category
+              </p>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-600 outline-none cursor-pointer"
+                className="w-full bg-gray-50 dark:bg-zinc-700 border border-gray-200 dark:border-zinc-600 rounded-xl px-4 py-2.5 text-sm text-gray-600 dark:text-zinc-300 outline-none cursor-pointer"
               >
                 {CATEGORIES.map((c) => (
                   <option key={c}>{c}</option>
@@ -151,21 +155,25 @@ export default function TransactionPage() {
               </select>
             </div>
             <div>
-              <p className="text-xs text-gray-400 mb-1.5">From Date</p>
+              <p className="text-xs text-gray-400 dark:text-zinc-500 mb-1.5">
+                From Date
+              </p>
               <input
                 type="date"
                 value={dateFrom}
                 onChange={(e) => setDateFrom(e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-600 outline-none"
+                className="w-full bg-gray-50 dark:bg-zinc-700 border border-gray-200 dark:border-zinc-600 rounded-xl px-4 py-2.5 text-sm text-gray-600 dark:text-zinc-300 outline-none"
               />
             </div>
             <div>
-              <p className="text-xs text-gray-400 mb-1.5">To Date</p>
+              <p className="text-xs text-gray-400 dark:text-zinc-500 mb-1.5">
+                To Date
+              </p>
               <input
                 type="date"
                 value={dateTo}
                 onChange={(e) => setDateTo(e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-600 outline-none"
+                className="w-full bg-gray-50 dark:bg-zinc-700 border border-gray-200 dark:border-zinc-600 rounded-xl px-4 py-2.5 text-sm text-gray-600 dark:text-zinc-300 outline-none"
               />
             </div>
           </div>
@@ -178,7 +186,7 @@ export default function TransactionPage() {
       {/* ── Add Transaction Modal ── */}
       {showModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md"
           onClick={(e) => e.target === e.currentTarget && handleClose()}
         >
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 relative animate-in fade-in zoom-in-95 duration-200">
@@ -214,9 +222,10 @@ export default function TransactionPage() {
                     setForm({ ...form, description: e.target.value })
                   }
                   className={`w-full bg-gray-50 border rounded-xl px-4 py-2.5 text-sm text-gray-700 outline-none transition-colors
-                    ${errors.description
-                      ? "border-red-300 focus:border-red-400"
-                      : "border-gray-200 focus:border-orange-300"
+                    ${
+                      errors.description
+                        ? "border-red-300 focus:border-red-400"
+                        : "border-gray-200 focus:border-orange-300"
                     }`}
                 />
                 {errors.description && (
@@ -236,13 +245,12 @@ export default function TransactionPage() {
                   placeholder="0.00"
                   min="0"
                   value={form.amount}
-                  onChange={(e) =>
-                    setForm({ ...form, amount: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, amount: e.target.value })}
                   className={`w-full bg-gray-50 border rounded-xl px-4 py-2.5 text-sm text-gray-700 outline-none transition-colors
-                    ${errors.amount
-                      ? "border-red-300 focus:border-red-400"
-                      : "border-gray-200 focus:border-orange-300"
+                    ${
+                      errors.amount
+                        ? "border-red-300 focus:border-red-400"
+                        : "border-gray-200 focus:border-orange-300"
                     }`}
                 />
                 {errors.amount && (
@@ -261,11 +269,12 @@ export default function TransactionPage() {
                       key={t}
                       onClick={() => setForm({ ...form, type: t })}
                       className={`flex-1 py-2 rounded-[10px] text-sm font-semibold capitalize transition-all cursor-pointer
-                        ${form.type === t
-                          ? t === "income"
-                            ? "bg-white text-emerald-600 shadow-sm"
-                            : "bg-white text-[#E8604A] shadow-sm"
-                          : "text-gray-400 hover:text-gray-600"
+                        ${
+                          form.type === t
+                            ? t === "income"
+                              ? "bg-white text-emerald-600 shadow-sm"
+                              : "bg-white text-[#E8604A] shadow-sm"
+                            : "text-gray-400 hover:text-gray-600"
                         }`}
                     >
                       {t}
@@ -299,13 +308,12 @@ export default function TransactionPage() {
                   <input
                     type="date"
                     value={form.date}
-                    onChange={(e) =>
-                      setForm({ ...form, date: e.target.value })
-                    }
+                    onChange={(e) => setForm({ ...form, date: e.target.value })}
                     className={`w-full bg-gray-50 border rounded-xl px-4 py-2.5 text-sm text-gray-600 outline-none transition-colors
-                      ${errors.date
-                        ? "border-red-300"
-                        : "border-gray-200 focus:border-orange-300"
+                      ${
+                        errors.date
+                          ? "border-red-300"
+                          : "border-gray-200 focus:border-orange-300"
                       }`}
                   />
                   {errors.date && (

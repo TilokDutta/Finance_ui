@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 export default function Navbar() {
     const navigate = useNavigate();
   return (
-    <nav className="bg-[#F5F5F0]/80 sticky top-0 z-40 backdrop-blur-md border-b border-gray-300/60">
+    <nav className="bg-[#F5F5F0]/80 sticky top-0 z-40 backdrop-blur-md border-b border-gray-300/60 dark:border-gray-800 dark:bg-zinc-800">
       <div className="flex max-w-6xl mx-auto px-6 h-16 items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
-            <span className="text-white text-xs font-bold">F</span>
+          <div className="w-8 h-8 bg-black dark:bg-white rounded-full flex items-center justify-center">
+            <span className="text-white text-xs font-bold dark:text-black">F</span>
           </div>
-          <span className="font-bold text-lg text-gray-900">Financify</span>
+          <span className="font-bold text-lg text-gray-900 dark:text-white">Financify</span>
         </div>
 
         <div className="hidden md:flex items-center gap-8 text-md font-medium text-gray-500">

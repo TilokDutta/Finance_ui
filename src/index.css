@@ -1,4 +1,12 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+@theme {
+  --font-family-sans: 'Plus Jakarta Sans', sans-serif;
+  --color-accent: #E8604A;
+  --color-accent-hover: #D94F38;
+  --color-bg: #F0EDE8;
+  --color-surface: #FFFFFF;
+}
 
 @layer base {
   :root {
@@ -6,8 +14,8 @@
     --accent-hover: #d4503a;
   }
   body {
-    @apply bg-[#F5F5F0] text-gray-900 font-sans;
-  }
+  @apply bg-[#F5F5F0] dark:bg-zinc-900 text-gray-900 dark:text-white font-sans;
+}
 }
 
 @layer components {

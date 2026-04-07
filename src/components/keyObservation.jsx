@@ -1,108 +1,86 @@
 import { AlertCircle, Award, TrendingDown, TrendingUp } from "lucide-react";
 import { useMemo } from "react";
-import { TRANSACTIONS } from "../data/data";
+import { useTransactionStore } from '../store';
+import { format, parseISO } from "date-fns";
 
 export default function KeyObservation() {
+  const transactions = useTransactionStore((s) => s.transactions);
+
   const observations = useMemo(() => {
-    const expenses = TRANSACTIONS.filter((t) => t.type === "expense");
-    const income = TRANSACTIONS.filter((t) => t.type === "income");
+    const expenses = transactions.filter((t) => t.type === "expense");
+    const income = transactions.filter((t) => t.type === "income");
 
     const totalIncome = income.reduce((s, t) => s + t.amount, 0);
     const totalExpense = expenses.reduce((s, t) => s + t.amount, 0);
 
-    // top spending category
     const categoryTotals = expenses.reduce((acc, t) => {
       acc[t.category] = (acc[t.category] || 0) + t.amount;
       return acc;
     }, {});
-    const topCategory = Object.entries(categoryTotals).sort(
-      (a, b) => b[1] - a[1],
-    )[0];
 
-    // savings rate
-    const savingsRate = (
-      ((totalIncome - totalExpense) / totalIncome) *
-      100
-    ).toFixed(0);
-
-    // biggest transaction
-    const biggest = [...TRANSACTIONS].sort((a, b) => b.amount - a.amount)[0];
-
-    // income expense ratio
-    const ratio = ((totalExpense / totalIncome) * 100).toFixed(0);
+    const topCategory = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1])[0];
+    const savingsRate = totalIncome > 0
+      ? (((totalIncome - totalExpense) / totalIncome) * 100).toFixed(0)
+      : 0;
+    const biggest = [...transactions].sort((a, b) => b.amount - a.amount)[0];
+    const ratio = totalIncome > 0 ? ((totalExpense / totalIncome) * 100).toFixed(0) : 0;
 
     return { topCategory, savingsRate, biggest, ratio };
-  }, []);
+  }, [transactions]);
+
+  const cards = [
+    {
+      icon: Award,
+      bg: "bg-yellow-50 dark:bg-yellow-900/20",
+      iconColor: "text-yellow-500",
+      title: `Top Spending: ${observations.topCategory?.[0] ?? "N/A"}`,
+      desc: `₹${observations.topCategory?.[1]?.toLocaleString("en-IN") ?? 0} total across all months`,
+    },
+    {
+      icon: TrendingUp,
+      bg: "bg-green-50 dark:bg-green-900/20",
+      iconColor: "text-green-500",
+      title: `Savings Rate: ${observations.savingsRate}%`,
+      desc: observations.savingsRate > 20
+        ? "Great! You're saving more than 20% of your income."
+        : "Try to save at least 20% of your income.",
+    },
+    {
+      icon: AlertCircle,
+      bg: "bg-blue-50 dark:bg-blue-900/20",
+      iconColor: "text-blue-500",
+      title: "Biggest Transaction",
+      desc: observations.biggest
+        ? `${observations.biggest.description} — ₹${observations.biggest.amount.toLocaleString("en-IN")} on ${format(parseISO(observations.biggest.date), "MMM d, yyyy")}`
+        : "No transactions yet",
+    },
+    {
+      icon: TrendingDown,
+      bg: "bg-purple-50 dark:bg-purple-900/20",
+      iconColor: "text-purple-500",
+      title: "Income / Expense Ratio",
+      desc: `For every ₹100 earned, you spend ₹${observations.ratio}`,
+    },
+  ];
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm">
-      <h3 className="font-bold text-xl text-gray-900 mb-4">Key Observations</h3>
+    <div className="bg-white dark:bg-zinc-800 rounded-2xl p-6 shadow-sm">
+      <h3 className="font-bold text-xl text-gray-900 dark:text-white mb-4">
+        Key Observations
+      </h3>
 
       <div className="flex flex-col gap-3">
-        {/* Top Spending */}
-        <div className="flex items-start gap-3 bg-yellow-50 rounded-2xl p-4">
-          <div className="w-8 h-8 flex items-center justify-center text-yellow-500">
-            <Award size={20} />
+        {cards.map(({ icon: Icon, bg, iconColor, title, desc }) => (
+          <div key={title} className={`flex items-start gap-3 ${bg} rounded-2xl p-4`}>
+            <div className={`w-8 h-8 flex items-center justify-center flex-shrink-0 ${iconColor}`}>
+              <Icon size={20} />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-gray-900 dark:text-white">{title}</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400 mt-0.5">{desc}</p>
+            </div>
           </div>
-          <div>
-            <p className="text-sm font-bold text-gray-900">
-              Top Spending: {observations.topCategory[0]}
-            </p>
-            <p className="text-xs text-gray-500 mt-0.5">
-              ₹{observations.topCategory[1].toLocaleString("en-IN")} total
-              across all months
-            </p>
-          </div>
-        </div>
-
-        {/* Savings Rate */}
-        <div className="flex items-start gap-3 bg-green-50 rounded-2xl p-4">
-          <div className="w-8 h-8 flex items-center justify-center text-green-500">
-            <TrendingUp size={20} />
-          </div>
-          <div>
-            <p className="text-sm font-bold text-gray-900">
-              Savings Rate: {observations.savingsRate}%
-            </p>
-            <p className="text-xs text-gray-500 mt-0.5">
-              {observations.savingsRate > 20
-                ? "Great! You're saving more than 20% of your income."
-                : "Try to save at least 20% of your income."}
-            </p>
-          </div>
-        </div>
-
-        {/* Biggest Transaction */}
-        <div className="flex items-start gap-3 bg-blue-50 rounded-2xl p-4">
-          <div className="w-8 h-8 flex items-center justify-center text-blue-500">
-            <AlertCircle size={20} />
-          </div>
-          <div>
-            <p className="text-sm font-bold text-gray-900">
-              Biggest Transaction
-            </p>
-            <p className="text-xs text-gray-500 mt-0.5">
-              {observations.biggest.description} — ₹
-              {observations.biggest.amount.toLocaleString("en-IN")} on{" "}
-              {observations.biggest.date}
-            </p>
-          </div>
-        </div>
-
-        {/* Income/Expense Ratio */}
-        <div className="flex items-start gap-3 bg-purple-50 rounded-2xl p-4">
-          <div className="w-8 h-8 flex items-center justify-center text-purple-500">
-            <TrendingDown size={20} />
-          </div>
-          <div>
-            <p className="text-sm font-bold text-gray-900">
-              Income / Expense Ratio
-            </p>
-            <p className="text-xs text-gray-500 mt-0.5">
-              For every ₹100 earned, you spend ₹{observations.ratio}
-            </p>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

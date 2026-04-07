@@ -5,7 +5,7 @@ export default function LandingPage() {
     <div>
       <Navbar />
       <section className="max-w-6xl mx-auto px-6 pt-40 pb-16 text-center">
-        <h1 className="text-5xl md:text-8xl font-bold text-gray-900 leading-[1.05]">
+        <h1 className="text-5xl md:text-8xl font-bold text-gray-900 leading-[1.05] dark:text-gray-300">
           Advance your business.
           <br />
           <span className="text-[#E8604A]">Simplify your finances.</span>
@@ -16,44 +16,50 @@ export default function LandingPage() {
         </p>
       </section>
       <section className="max-w-6xl mx-auto px-6 pb-24">
-        <div className="relative rounded-3xl overflow-hidden border border-gray-200 shadow-2xl bg-white">
+        <div className="relative rounded-3xl overflow-hidden border border-gray-200 dark:border-zinc-700 shadow-2xl bg-white dark:bg-zinc-900">
           {/* Fake browser bar */}
-          <div className="flex items-center gap-2 px-5 py-3 border-b border-gray-100 bg-gray-50">
+          <div className="flex items-center gap-2 px-5 py-3 border-b border-gray-100 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-800">
             <div className="w-3 h-3 rounded-full bg-red-400" />
             <div className="w-3 h-3 rounded-full bg-yellow-400" />
             <div className="w-3 h-3 rounded-full bg-green-400" />
-            <div className="ml-4 bg-white rounded-md px-3 py-1 text-xs text-gray-400 max-w-xs border border-gray-200">
+            <div className="ml-4 bg-white dark:bg-zinc-700 rounded-md px-3 py-1 text-xs text-gray-400 dark:text-zinc-400 max-w-xs border border-gray-200 dark:border-zinc-600">
               flourish.app/dashboard
             </div>
           </div>
 
           {/* Mock Dashboard */}
           <div className="flex h-80 overflow-hidden">
-            <div className="w-52 border-r border-gray-100 bg-white p-4 hidden md:block">
-              <div className="w-8 h-8 bg-black rounded-full mb-6" />
+            <div className="w-52 border-r border-gray-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 hidden md:block">
+              <div className="w-8 h-8 bg-black dark:bg-white rounded-full mb-6" />
               {["Overview", "Transactions", "Insights"].map((item, i) => (
                 <div
                   key={item}
-                  className={`flex items-center gap-3 rounded-xl px-3 py-2 mb-1 text-sm ${i === 0 ? "bg-orange-50 text-[#E8604A] font-semibold" : "text-gray-400"}`}
+                  className={`flex items-center gap-3 rounded-xl px-3 py-2 mb-1 text-sm ${
+                    i === 0
+                      ? "bg-orange-50 dark:bg-[#E8604A]/10 text-[#E8604A] font-semibold"
+                      : "text-gray-400 dark:text-zinc-500"
+                  }`}
                 >
                   <div
-                    className={`w-4 h-4 rounded ${i === 0 ? "bg-[#E8604A]" : "bg-gray-200"}`}
+                    className={`w-4 h-4 rounded ${i === 0 ? "bg-[#E8604A]" : "bg-gray-200 dark:bg-zinc-700"}`}
                   />
                   {item}
                 </div>
               ))}
             </div>
 
-            <div className="flex-1 p-6 bg-[#F5F5F0]">
+            <div className="flex-1 p-6 bg-[#F5F5F0] dark:bg-zinc-950">
               <div className="grid grid-cols-3 gap-4 mb-4">
                 {["Total Balance", "Income", "Expenses"].map((label, i) => (
                   <div
                     key={label}
-                    className="bg-white rounded-xl p-4 shadow-sm"
+                    className="bg-white dark:bg-zinc-800 rounded-xl p-4 shadow-sm"
                   >
-                    <div className="text-xs text-gray-400 mb-1">{label}</div>
+                    <div className="text-xs text-gray-400 dark:text-zinc-500 mb-1">
+                      {label}
+                    </div>
                     <div
-                      className={`text-lg font-bold ${i === 2 ? "text-[#E8604A]" : "text-gray-900"}`}
+                      className={`text-lg font-bold ${i === 2 ? "text-[#E8604A]" : "text-gray-900 dark:text-white"}`}
                     >
                       {i === 0
                         ? "₹3,24,800"
@@ -65,8 +71,8 @@ export default function LandingPage() {
                 ))}
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white rounded-xl p-4 shadow-sm">
-                  <div className="text-xs text-gray-400 mb-3">
+                <div className="bg-white dark:bg-zinc-800 rounded-xl p-4 shadow-sm">
+                  <div className="text-xs text-gray-400 dark:text-zinc-500 mb-3">
                     Balance Trend
                   </div>
                   <div className="flex items-end gap-1 h-12">
@@ -82,8 +88,10 @@ export default function LandingPage() {
                     ))}
                   </div>
                 </div>
-                <div className="bg-white rounded-xl p-4 shadow-sm">
-                  <div className="text-xs text-gray-400 mb-3">Spending</div>
+                <div className="bg-white dark:bg-zinc-800 rounded-xl p-4 shadow-sm">
+                  <div className="text-xs text-gray-400 dark:text-zinc-500 mb-3">
+                    Spending
+                  </div>
                   <div className="flex gap-2 flex-wrap">
                     {["Rent", "Food", "Travel", "Shopping"].map((c, i) => (
                       <span
@@ -111,7 +119,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-      <footer className="border-t border-gray-100 py-8 border-t border-gray-200">
+      <footer className="border-t border-gray-100 dark:border-gray-800 py-8 border-t border-gray-200">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-400">
           {/* <div className="flex items-center gap-2">
             <div className="w-6 h-6 bg-black rounded-full" />

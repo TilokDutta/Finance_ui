@@ -1,22 +1,7 @@
-import {
-  eachMonthOfInterval,
-  endOfMonth,
-  format,
-  parseISO,
-  startOfMonth,
-  subMonths,
-} from "date-fns";
 import { useMemo, useState } from "react";
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
-import { TRANSACTIONS } from "../data/data";
+import { useTransactionStore } from "../store";
+import { eachMonthOfInterval, endOfMonth, format, parseISO, startOfMonth, subMonths } from "date-fns";
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 const config = [
   { key: "balance", label: "Balance", color: "#E8604A" },
@@ -27,8 +12,8 @@ const config = [
 const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-white border border-gray-100 rounded-xl shadow-lg px-4 py-3">
-      <p className="text-xs text-gray-400 mb-1">{label}</p>
+    <div className="bg-white dark:bg-zinc-700 border border-gray-100 dark:border-zinc-600 rounded-xl shadow-lg px-4 py-3">
+      <p className="text-xs text-gray-400 dark:text-zinc-300 mb-1">{label}</p>
       <p className="text-sm font-bold" style={{ color: payload[0].color }}>
         ₹{payload[0].value?.toLocaleString("en-IN")}
       </p>
@@ -37,34 +22,27 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 export default function Revenue() {
+  const transactions = useTransactionStore((s) => s.transactions);
   const [view, setView] = useState("balance");
-
   const currentConfig = config.find((c) => c.key === view);
 
   const data = useMemo(() => {
     const now = new Date();
-    const months = eachMonthOfInterval({
-      start: subMonths(now, 5),
-      end: now,
-    });
+    const months = eachMonthOfInterval({ start: subMonths(now, 5), end: now });
 
     return months.map((month) => {
       const start = startOfMonth(month);
       const end = endOfMonth(month);
-
-      const monthTxns = TRANSACTIONS.filter((t) => {
+      const monthTxns = transactions.filter((t) => {
         const d = parseISO(t.date);
         return d >= start && d <= end;
       });
-
       const income = monthTxns
         .filter((t) => t.type === "income")
         .reduce((sum, t) => sum + t.amount, 0);
-
       const expense = monthTxns
         .filter((t) => t.type === "expense")
         .reduce((sum, t) => sum + t.amount, 0);
-
       return {
         month: format(month, "MMM"),
         income,
@@ -72,30 +50,37 @@ export default function Revenue() {
         balance: income - expense,
       };
     });
-  }, []);
+  }, [transactions]);
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm mt-8">
+    <div className="bg-white dark:bg-zinc-800 rounded-2xl p-6 shadow-sm mt-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="font-bold text-gray-900 text-xl">
+          <h3 className="font-bold text-gray-900 dark:text-white text-xl">
             Revenue & Expenses
           </h3>
-          <p className="text-md text-gray-400 mt-0.5">6-months overview</p>
+          <p className="text-sm text-gray-400 dark:text-zinc-400 mt-0.5">
+            6-months overview
+          </p>
         </div>
 
-        <div className="flex bg-gray-100 rounded-xl p-1">
+        <div className="flex bg-gray-100 dark:bg-zinc-700 rounded-xl p-1">
           {config.map(({ label, key }) => (
             <button
               key={key}
               onClick={() => setView(key)}
-              className={`text-md font-semibold px-3 py-1.5 rounded-[10px] capitalize cursor-pointer ${view === key ? "bg-white text-gray-900 shadow-md" : "text-gray-400 hover:text-gray-600"}`}
+              className={`text-sm font-semibold px-3 py-1.5 rounded-[10px] capitalize cursor-pointer transition-all ${
+                view === key
+                  ? "bg-white dark:bg-zinc-600 text-gray-900 dark:text-white shadow-md"
+                  : "text-gray-400 dark:text-zinc-400 hover:text-gray-600 dark:hover:text-zinc-200"
+              }`}
             >
               {label}
             </button>
           ))}
         </div>
       </div>
+
       <ResponsiveContainer width="100%" height={220}>
         <AreaChart
           data={data}
@@ -117,14 +102,15 @@ export default function Revenue() {
           </defs>
           <CartesianGrid
             strokeDasharray="3 3"
-            stroke="#f0f0f0"
+            stroke="currentColor"
+            className="text-gray-100 dark:text-zinc-700"
             vertical={false}
           />
           <XAxis
             dataKey="month"
             axisLine={false}
             tickLine={false}
-            tick={{ fontSize: 12, fill: "#9ca3af" }}
+            tick0={{ fontSize: 12, fill: "#9ca3af" }}
           />
           <YAxis
             axisLine={false}
